@@ -35,6 +35,7 @@
     .dropdown-container select{
         border: none;
         border-bottom: dotted 0.5px var(--xCharcoal);
+        margin-left: 0.5rem;
     }
 
     /* Typeface colours grouped */
