@@ -114,6 +114,38 @@ Further (data vis) SVG is added over the top using JavaScript and [D3.js](https:
 ***
 &nbsp;
 
+# HOW TO USE THESE GRAPHICS FOR DIFFERENT MEDIUMS
+[Return to contents](#contents)
+## i. Published web links (for viewing and embedding)
+As these graphics are rendered in the browser, this repo has also published to [Github pages](https://pages.github.com/) so that they can be easily shared an embedded. In this way,  Github pages is used to as a convenient static web server for publishing these graphics, and can be used as links to embed graphics in other webpages and apps, including the SV CMS.
+
+An HTML index page has also been added to the repo (index.html) that provides a user friendly single access point to all graphics [here](./index.html)
+
+If (in the future) other hosting services are preferred, they can (most likely) be linked to this Github repo. 
+
+&nbsp;
+## ii. Exporting vector graphics for designed print publications
+As mentioned, SVG and HTML based graphics export (via print to PDF) as vector graphic files. Vector files are generally the highest 'publication quality' format for data visualisation that can be embedded and/or further edited in publication software like Adobe Illustrator and InDesign, or Affinity Design and Publisher. [Inkscape](https://inkscape.org/) is also a (free) open source alternative for vector graphics.These software packages can also export in other common graphic file formats (e.g. PNG and JPG) from these software packages.
+
+&nbsp;
+## iii. Creating raster image files for MS documents (Word and PowerPoint)
+For MS Word documents, embedding vector graphics is problematic on Windows based machines (at the time or writing, where embedding PDF is possible however they become rasterised when saved). This is not problem on Mac OS machines where MS Word and PowerPoint happily accept and vector PDF files. 
+
+> The fallback for Windows users who don't have access to graphics software is to convert from PDF to PNG (as the preferable raster image format).
+
+&nbsp;
+## iv. Embedding (iframe) on the SV website (or other web applications)
+Certain graphics have been designed to be embedded in another web page or application - most notably the SV CMS. To accommodate this embedding, each graphic is designed to be responsive and will stretch to the width of the browser page. This includes HTML text and spacing that is specified in [viewport width](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units) units so that it has the same resizing behaviour as SVG elements. 
+
+> **Design considerations for the SV website:**
+> - The current SV website has quite a narrow, centered content block. Data visualisations are embedded as into this content flow, meaning that they appear quite narrow on screen. Data visualisations intended for embedding on the SV website need to consider this limitation.
+> - Every embedded data visualisation does also have a 'view full screen option': this allows some flexibility to design for full screen. 
+> - The SV CMS requires that embedded graphics contain the [iframe resizer](https://github.com/davidjbradshaw/iframe-resizer) code snippet. This snipper is added as a CDN link to each graphic. All newly made graphics should be published with this snippet.   
+> - The SV CMS embeds html based graphics using the "Advanced data visualisation (D3)" component that allows for any [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) to be specified. 
+
+&nbsp;
+***
+&nbsp;
 
 # HOW THE MARKET BULLETIN CODE IS STRUCTURED
 [Return to contents](#contents)
@@ -259,7 +291,7 @@ In each Market Bulletin edition there are five sections (i.e. pages or 'entries'
 ## i. Market Overview: embedded data visualisations (6)
 | Title  | Suggested CMS component name | html filename | Query parameter name | Query parameter value format |  Query parameter default |  Query parameter description
 | --- | --- | --- | --- |---| ---| ---|
-| Victorian kerbside recovered resource flows | mb-[mmm]-[yy]-**flow-visualisation** | /kerbside-collection/index.html | to | mmm-yy |  Last month of the dataset | Month of year for chart to finish
+| Victorian kerbside recovered resource flows | mb-[mmm]-[yy]-**flow-visualisation** | [/kerbside-collection/index.html](https://sv-data-projects.github.io/market-bulletin-graphics/kerbside-collection-flows/index.html) | to | mmm-yy |  Last month of the dataset | Month of year for chart to finish
 | | | | *from* | *mmm-yy* | *12 months prior to end date* |  *Month of year for chart to start*
 | Destination of collected kerbside waste (with materials selector) | mb-[mmm]-[yy]-**destination-all** | /time-series-charts/destination.html | to | mmm-yy |  Last month of the dataset | Month of year for chart to finish
 | | | | *from* | *mmm-yy* | *12 months prior to end date* |  *Month of year for chart to start*
@@ -321,34 +353,4 @@ In each Market Bulletin edition there are five sections (i.e. pages or 'entries'
 | Exported glas | mb-[mmm]-[yy]-**export-chart-metals**| /time-series-chart/export-metals.html | to | mmm-yy | *Last month of the dataset* |  Month of year to display data for
 | | | | *from* | *mmm-yy* | *12 months prior to end date* |  *Month of year for chart to start*
 | Metals export data trends| mb-[mmm]-[yy]-**export-table-metals**| /materials-dashboard/export-by-material.html?material=Metals | to | mmm-yy | *Last month of the dataset* |  Month of year to display data for
-&nbsp;
 
-&nbsp;
-# HOW TO USE THESE GRAPHICS FOR DIFFERENT MEDIUMS
-[Return to contents](#contents)
-## i. Published web links (for viewing and embedding)
-As these graphics are rendered in the browser, this repo has also published to [Github pages](https://pages.github.com/) so that they can be easily shared an embedded. In this way,  Github pages is used to as a convenient static web server for publishing these graphics, and can be used as links to embed graphics in other webpages and apps, including the SV CMS.
-
-An HTML index page has also been added to the repo (index.html) that provides a user friendly single access point to all graphics [here](./index.html)
-
-If (in the future) other hosting services are preferred, they can (most likely) be linked to this Github repo. 
-
-&nbsp;
-## ii. Exporting vector graphics for designed print publications
-As mentioned, SVG and HTML based graphics export (via print to PDF) as vector graphic files. Vector files are generally the highest 'publication quality' format for data visualisation that can be embedded and/or further edited in publication software like Adobe Illustrator and InDesign, or Affinity Design and Publisher. [Inkscape](https://inkscape.org/) is also a (free) open source alternative for vector graphics.These software packages can also export in other common graphic file formats (e.g. PNG and JPG) from these software packages.
-
-&nbsp;
-## iii. Creating raster image files for MS documents (Word and PowerPoint)
-For MS Word documents, embedding vector graphics is problematic on Windows based machines (at the time or writing, where embedding PDF is possible however they become rasterised when saved). This is not problem on Mac OS machines where MS Word and PowerPoint happily accept and vector PDF files. 
-
-> The fallback for Windows users who don't have access to graphics software is to convert from PDF to PNG (as the preferable raster image format).
-
-&nbsp;
-## iv. Embedding (iframe) on the SV website (or other web applications)
-Certain graphics have been designed to be embedded in another web page or application - most notably the SV CMS. To accommodate this embedding, each graphic is designed to be responsive and will stretch to the width of the browser page. This includes HTML text and spacing that is specified in [viewport width](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units) units so that it has the same resizing behaviour as SVG elements. 
-
-> **Design considerations for the SV website:**
-> - The current SV website has quite a narrow, centered content block. Data visualisations are embedded as into this content flow, meaning that they appear quite narrow on screen. Data visualisations intended for embedding on the SV website need to consider this limitation.
-> - Every embedded data visualisation does also have a 'view full screen option': this allows some flexibility to design for full screen. 
-> - The SV CMS requires that embedded graphics contain the [iframe resizer](https://github.com/davidjbradshaw/iframe-resizer) code snippet. This snipper is added as a CDN link to each graphic. All newly made graphics should be published with this snippet.   
-> - The SV CMS embeds html based graphics using the "Advanced data visualisation (D3)" component that allows for any [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) to be specified. 
