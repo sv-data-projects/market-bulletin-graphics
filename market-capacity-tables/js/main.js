@@ -99,7 +99,8 @@
             settings.state.material = settings.queryParameters.get('material')  
         }
         // iii. Set date based on query string input. If none is provided the latest date is used
-        settings.state.date = settings.queryParameters.get('date')  ? settings.queryParameters.has('date') : data.schema.lists.date[data.schema.lists.date.length - 1] 
+console.log(settings.queryParameters.has('date') )
+        settings.state.date = settings.queryParameters.has('date')  ? settings.queryParameters.get('date') : data.schema.lists.date[data.schema.lists.date.length - 1] 
     };
 
     async function buildCapabilityTable(config){
