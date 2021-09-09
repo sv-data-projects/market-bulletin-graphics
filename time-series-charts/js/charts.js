@@ -334,7 +334,6 @@ chart.methods.seriesContext.renderChart = async(settings) => {
                 console.log('No valid chart type')
         }
 
-
         // c. CONTEXT CHART: add x-axis amd setup brush for starting date range (inl. setting state)
         svgContext.append("g").classed('x-axis axis context', true)
             .call(xAxis, x, contextChartHeight)
@@ -368,8 +367,7 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             .attr("dy", "50")
             .text(settings.axis.x.label)
 
-
-            // b. Series labels and annotation
+        // b. Series labels and annotation
         switch(chartType){
             case 'line':
             case 'area':
@@ -457,7 +455,7 @@ chart.methods.seriesContext.renderChart = async(settings) => {
                 .attr('y', height - settings.dims.margin.bottom - 26)
 
                 break
-
+            default: 
         }
 
 
@@ -472,7 +470,7 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             .on('mousemove', showChartTooltip)
             .on('mouseleave', hideChartTooltip)
 
-    let totalLineWidth, totalLineWidthSet = false   // Variables to set totals divider line once
+    let totalLineWidth = margin.right, totalLineWidthSet = false   // Variables to set totals divider line once
 
     // b. Prepare tooltip elements ()
         // Tooltip background (beneath text to improve legibility when tooltip covers part of the data)
@@ -526,7 +524,7 @@ chart.methods.seriesContext.renderChart = async(settings) => {
                 .attr('y', totalYpos + 5) 
         }
 
-        // Set visibiilty of tooltip elements on load
+        // Set visibility of tooltip elements on load
         hideChartTooltip()
 
 
@@ -595,7 +593,7 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             d3.select(selection[closestIndex]).attr('r', chartObj.state.dataPointRadius * 2)
         })
 
-        // Update the total line if there are more than one series shown
+        // Update the total underline if there are more than one series shown
         if(chartObj.series.length > 1){  
             // Set a total line width (rather than recalc on mouse movement)
             if(!totalLineWidthSet || tooltipElements.node().getBBox().width < totalLineWidth){
