@@ -22,13 +22,13 @@
             </div>
         </div>
         <div class="stepper-container">
-            <nav class = "stepper-nav">
+            <nav class = "stepper-nav" role="tablist">
                 <ul>
-                    <li id="step-1" class ="step-item step-current"><a><span value='All collected materials'>All materials</span></a></li>
-                    <li id="step-1" class ="step-item"><a><span value='Paper and cardboard'>Paper and cardboard</span></a></li>
-                    <li id="step-2" class ="step-item"><a><span value='Glass'>Glass</span></a></li>
-                    <li id="step-3" class ="step-item"><a><span value='Plastics'>Plastics</span></a></li>
-                    <li id="step-4" class ="step-item"><a><span value='Metals'>Metals</span></a></li>
+                    <li id="step-1" class ="step-item step-current" role="tab" aria-selected = 'true'><a><span value='All collected materials'>All materials</span></a></li>
+                    <li id="step-2" class ="step-item" role="tab"><a><span value='Paper and cardboard'>Paper and cardboard</span></a></li>
+                    <li id="step-3" class ="step-item" role="tab"><a><span value='Glass'>Glass</span></a></li>
+                    <li id="step-4" class ="step-item" role="tab"><a><span value='Plastics'>Plastics</span></a></li>
+                    <li id="step-5" class ="step-item" role="tab"><a><span value='Metals'>Metals</span></a></li>
                 </ul>
             </nav>
         </div><!-- /tabs -->
@@ -101,8 +101,8 @@
             // 4. Add custom stepper interface to re-render charts by material
             d3.selectAll('.step-item')
                 .on('click', function(){
-                    d3.selectAll('.step-item').classed('step-current', false)
-                    d3.select(this).classed('step-current', true)
+                    d3.selectAll('.step-item').classed('step-current', false).attr('aria-selected', false)
+                    d3.select(this).classed('step-current', true).attr('aria-selected', true)
                     settings.group = this.children[0].children[0].getAttribute('value')
                     rebuild(settings)
                 })

@@ -257,8 +257,12 @@
             // a. Setup SVG element viewBox and add layers (in rendering order)
             const svg = d3.select(`#${settings.svgID}`).classed('figure fullpage svg-content', true)
                     .attr('viewBox', `0 0 ${settings.dims.width} ${settings.dims.height}`)
-                    .attr('preserveAspectRatio', 'xMidYMid meet'),
+                    .attr('preserveAspectRatio', 'xMidYMid meet')
+                    .attr('aria-labelledby',  'svgTitle svgDesc')
+                    .attr('role',  'figure'),
                 defs = svg.append('defs'),
+                svgTitle = svg.append('title').attr('id','svgTitle'),
+                svgDesc = svg.append('desc').attr('id','svgDesc'),
                 linkLayer = svg.append('g').classed('links-group-layer l1 layer', true),
                 nodeLayer = svg.append('g').classed('node-group-layer l1 layer', true),
                 annotationLayer = svg.append('g').classed('annotation-group-layer l1 layer', true),
@@ -276,6 +280,18 @@
 
             // b. Call method to programmatically create link gradient fills in SVG defs
             await vis.flow.methods.setGradients(defs, settings)         
+
+            // c. Add title and desc for for screen readers
+            const svgTitleText = `A diagram showing the volumes of materials collected (${settings.nodes.sources.map(d => d.name).toString}) and their destination (${settings.nodes.targets.map(d => d.name).toString})`,
+                svgDescText = `A diagram showing the volumes of materials collected (${settings.nodes.sources.map(d => d.name).toString}) and their destination (${settings.nodes.targets.map(d => d.name).toString}). Volumes (in tonnes) are shown by default  from ${vis.flow.state.dateRange.from} to ${vis.flow.state.dateRange.to}. These dates can be changed from dropdown menus above the diagram. Various views of the flows between collected material and destination (and their circular return links) are shown by pressing on tab-like buttons, also above the diagram.`
+
+            svgTitle.html(svgTitleText)
+            svgDesc.html(svgDescText)
+
+            // Toggle title so that it doesn't appear as a default tooltip
+            svg.on('mouseover', () => document.getElementById('svgTitle').innerHTML = null )
+                .on('mouseout', () =>  document.getElementById('svgTitle').innerHTML = svgTitleText )
+
 
         //----- 2. DATA PREPARATION | FILTER DATA FOR DATE BOUNDS -----//
             // a. Filter and set chartData based on selected dates
@@ -1039,7 +1055,7 @@
         // No pointer events
        vis.flow.methods.anim.blockEvents(null)
 
-        // Into animation settings
+        // Intro animation settings
         vis.flow.state.step = 'step-1'
         vis.flow.methods.anim.setVerticalNodeAxis(false, duration, true)
         vis.flow.methods.anim.setAnnotation()
@@ -1739,13 +1755,13 @@ console.log('Block for '+duration)
         // Setup stepper        
         function moveStepper(el){
             d3.selectAll('.stepper-nav li').classed('step-current', false)	
-            d3.select(el).classed('step-current', true)	
+            d3.select(el).classed('step-current', true).attr('aria-selected', true)
         }
         // Add stepper events 
         d3.selectAll('.step-item').on( 'click', function(){
             // Transition stepper and record state
-            d3.selectAll('.stepper-nav li').classed('step-current', false)	
-            d3.select(this).classed('step-current', true)	
+            d3.selectAll('.stepper-nav li').classed('step-current', false).attr('aria-selected', false)	
+            d3.select(this).classed('step-current', true).attr('aria-selected', true)
             vis.flow.state.step = this.id
             // Transition scene
             switch(this.id){

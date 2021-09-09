@@ -70,16 +70,35 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             chartWidth = settings.dims.width,
             margin = settings.dims.margin
 
-        const defs = d3.select('#'+svgID).append('defs')
-
         const svgMain = d3.select('#'+svgID)
             .classed(chartType+'-context-chart main interactive', true)
             .attr("viewBox", [0, 0, chartWidth, height])
+            .attr('aria-labelledby',  'svgMainTitle svgMainDesc')
+            .attr('role',  'figure')
+
+        const defs = svgMain.append('defs')
 
         const svgContext = d3.select('#'+svgContextID).classed('line-chart context interactive', true)
             .attr("viewBox", [0, 0, chartWidth, contextChartHeight])
-            
-        // c. Chart element layers
+            .attr('aria-labelledby',  'svgContextTitle svgContextDesc')
+
+        // c. Add title and desc information for screen reader accessibility
+        const svgMainTitle = `Time series ${settings.config.chartType} chart for ${settings.group} showing the series of: ${settings.series.toString()}, over the period from ${settings.axis.x.start} to ${settings.axis.x.end} is shown by default`,
+            svgMainDescription =  `Time series ${settings.config.chartType} chart for ${settings.group} showing the series of: ${settings.series.toString()}. The period from ${settings.axis.x.start} to ${settings.axis.x.end} is shown by default, but can be changed by using the context chart window below. Volumes are are measured in ${settings.axis.y.label} ${settings.axis.x.unit}`,
+            svgContextTitle =  `Time series context ${settings.config.chartType} chart for ${settings.group} showing the series of: ${settings.series.toString()}, from the beginning of the data time series to ${settings.axis.x.end}.`,
+            svgContextDescription = `The time series context chart is a miniature version of the main chart showing the full timeline of data.  This chart has a 'window' that can be interacted with to change the time scale shown on the main chart (to zoom in or out).`
+
+        svgMain.append('title').attr('id', 'svgMainTitle').html(svgMainTitle) 
+        svgMain.append('desc').attr('id', 'svgMainDesc').html(svgMainDescription)
+        svgContext.append('title').attr('id', 'svgContextTitle').html(svgContextTitle)           
+        svgContext.append('desc').attr('id', 'svgContextDesc').html(svgContextDescription) 
+        // Toggle title so that it doesn't appear as a default tooltip
+        svgMain.on('mouseover', () => document.getElementById('svgMainTitle').innerHTML = null )
+            .on('mouseout', () =>  document.getElementById('svgMainTitle').innerHTML = svgMainTitle )
+        svgContext.on('mouseover', () => document.getElementById('svgContextTitle').innerHTML = null )
+            .on('mouseout', () =>  document.getElementById('svgContextTitle').innerHTML = svgContextTitle )
+
+        // d. Chart element layers
         const chartGroup = svgMain.append('g').classed('chart-group', true),
             xAxisGroup = chartGroup.append("g").classed('axis-group-x x-axis axis', true),
             yAxisGroup = chartGroup.append("g").classed('axis-group-y y-axis axis', true),
@@ -92,7 +111,7 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             svgContextChart = svgContext.append("g").classed('brush-group', true)
             brushGroup = svgContext.append("g").classed('brush-group', true)
 
-        // d. Add main chart clip path
+        // e. Add main chart clip path
         defs.append("clipPath")
             .attr("id", `${svgID}-clipPath`)
             .append("rect")

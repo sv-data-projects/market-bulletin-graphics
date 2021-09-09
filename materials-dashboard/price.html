@@ -23,12 +23,12 @@
                     </div>
                 </div>
                 <div class="stepper-container">
-                    <nav class = "stepper-nav">
+                    <nav class = "stepper-nav" role="tablist">
                         <ul>
-                            <li id="step-1" class ="step-item step-current"><a><span>Paper and cardboard</span></a></li>
-                            <li id="step-2" class ="step-item"><a><span>Glass</span></a></li>
-                            <li id="step-3" class ="step-item"><a><span>Plastics</span></a></li>
-                            <li id="step-4" class ="step-item"><a><span>Metals</span></a></li>
+                            <li id="step-1" class = "step-item step-current" role="tab" aria-selected = 'true'><a><span>Paper and cardboard</span></a></li>
+                            <li id="step-2" class = "step-item" role="tab"><a><span>Glass</span></a></li>
+                            <li id="step-3" class = "step-item" role="tab"><a><span>Plastics</span></a></li>
+                            <li id="step-4" class = "step-item" role="tab"><a><span>Metals</span></a></li>
                         </ul>
                     </nav>
                 </div><!-- /tabs -->
@@ -42,8 +42,7 @@
                 </div>
                 <div class = 'sub-card'>
                     <h3 class = 'material-price-card-group card-subheader recycled'>Recycled materials</h3>
-                    <div id ="material-price-card-container-mrfOutput" class = "material-price-card-container">
-                    </div>
+                    <div id ="material-price-card-container-mrfOutput" class = "material-price-card-container"></div>
                 </div>              
             </div>
         </main>
@@ -53,8 +52,8 @@
             // Add stepper interface to re-render charts by material
             d3.selectAll('.step-item')
                 .on('click', async function(){
-                    d3.selectAll('.step-item').classed('step-current', false)
-                    d3.select(this).classed('step-current', true)
+                    d3.selectAll('.step-item').classed('step-current', false).classed('aria-selected' , false)
+                    d3.select(this).classed('step-current', true).classed('aria-selected' , true)
                     state.material = this.children[0].children[0].innerHTML
                     await updateDashboard()
                 })

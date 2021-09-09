@@ -463,8 +463,8 @@
         if(document.querySelectorAll('.step-item').length > 0){
             d3.selectAll('.step-item').on('click', function(){
                 settings.state.material = this.children[0].children[0].innerHTML
-                d3.selectAll('.step-item').classed('step-current', false)
-                d3.select(this).classed('step-current', true)
+                d3.selectAll('.step-item').classed('step-current', false).classed('aria-selected', false)
+                d3.select(this).classed('step-current', true).classed('aria-selected', true)
                 rebuild()
             })
         }
@@ -492,16 +492,29 @@
         const vis = d3.select(`#${settings.svgID}`)
             .attr('viewBox', `0 0 ${settings.dims.width} ${settings.dims.height}`)
 
-        const pricesGroup = vis.append('g').classed('prices-group', true),
+        const svgTitle = vis.append('title').attr('id','svgTitle'),
+            svgDesc = vis.append('desc').attr('id','svgDesc'),
+            pricesGroup = vis.append('g').classed('prices-group', true),
             linkGroup = vis.append('g').classed('links-group', true),
             nodesGroup = vis.append('g').classed('nodes-group', true),
             annotationGroup = vis.append('g').classed('annotation-group', true)
+
+        // 2. Setup title and desc for screen reader accessibility
+        const svgTitleText = `A diagram showing the prices for various ${settings.state.material.toLowerCase()} materials in ${settings.state.date}) along the value chain `,
+            svgDescText = `A diagram showing the prices for various ${settings.state.material.toLowerCase()} materials in ${settings.state.date}) along the value chain stages of: ${Object.keys(settings.geometry.chain[settings.state.material]).toString()}. Prices are shown for ${settings.geometry.price[settings.state.material]['MRF output'].label}:  ${Object.keys(settings.geometry.price[settings.state.material]['MRF output'].subMaterials).toString()}. And for ${settings.geometry.price[settings.state.material]['Virgin'].label}:  ${Object.keys(settings.geometry.price[settings.state.material]['Virgin'].subMaterials).toString()} `
+
+        svgTitle.html(svgTitleText)
+        svgDesc.html(svgDescText)
+
+        // Toggle title so that it doesn't appear as a default tooltip
+        vis.on('mouseover', () => document.getElementById('svgTitle').innerHTML = null )
+            .on('mouseout', () =>  document.getElementById('svgTitle').innerHTML = svgTitleText )
 
         // Link shape generator
         const linkHorizontal = d3.linkHorizontal()
         const linkVertical = d3.linkVertical()
 
-        // 2. RENDER SUPPLY CHAIN: Add nodes, label and paths
+        // 3. RENDER SUPPLY CHAIN: Add nodes, label and paths
         const geometryData = settings.geometry.chain[settings.state.material]
 
         Object.entries(geometryData).forEach(([name, obj])=> {
@@ -534,7 +547,7 @@
             }
         })
 
-        // 3. ADD PRICES
+        // 4. ADD PRICES
         const pricesData = data.byMaterial[settings.state.material].filter(d => helpers.timeFormat.toMthYear(d.date) === settings.state.date)[0]
         // a. Virgin sub-material prices on lower side
         Object.entries(pricesData.Virgin).forEach( ([subMaterial, value], i) => {
@@ -611,7 +624,7 @@
                 .attr('d', leaderPath )
         })
 
-        // 4. ADD ANNOTATION
+        // 5. ADD ANNOTATION
         annotationGroup.append('text')
             .classed('type-label recovered', true)
             .attr('x', settings.geometry.price[settings.state.material]['MRF output'].labelPos.x )
