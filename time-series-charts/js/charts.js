@@ -74,7 +74,6 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             .classed(chartType+'-context-chart main interactive', true)
             .attr("viewBox", [0, 0, chartWidth, height])
             .attr('aria-labelledby',  'svgMainTitle svgMainDesc')
-            .attr('role',  'figure')
 
         const defs = svgMain.append('defs')
 
@@ -99,7 +98,8 @@ chart.methods.seriesContext.renderChart = async(settings) => {
             .on('mouseout', () =>  document.getElementById('svgContextTitle').innerHTML = svgContextTitle )
 
         // d. Chart element layers
-        const chartGroup = svgMain.append('g').classed('chart-group', true),
+        const chartGroup = svgMain.append('g').classed('chart-group', true)
+                .attr('role',  'figure').attr('tabindex', 0),
             xAxisGroup = chartGroup.append("g").classed('axis-group-x x-axis axis', true),
             yAxisGroup = chartGroup.append("g").classed('axis-group-y y-axis axis', true),
             areaGroup = chartGroup.append("g").classed("areas-group", true),
@@ -308,10 +308,16 @@ chart.methods.seriesContext.renderChart = async(settings) => {
                     const seriesName = Object.keys(obj)[0], seriesData = Object.values(obj)[0]
                     dataPointGroup
                         .attr("clip-path", `url(#${svgID}-clipPath-markers)`)    
+                        .attr('tabindex', 0)
+                        .attr('role', 'list')
+                        .attr('aria-label', 'dots')
                         .selectAll(`.data-point.${helpers.slugify(seriesName)}`)
                         .data(seriesData)
                         .join("circle")
                             .classed(`data-point main ${helpers.slugify(seriesName)}`, true)
+                            .attr('tabindex', 0)
+                            .attr('role', 'listitem')
+                            .attr('aria-label', 'data description')
                 })
 
                 // CONTEXT CHART: add lines and area for each series
@@ -547,7 +553,12 @@ chart.methods.seriesContext.renderChart = async(settings) => {
         hideChartTooltip()
 
 
-    //---------------------------- 6. CHART INTERACTION METHODS -----------------------------//
+    //---------------------------- 6. ACCESSIBILITY ENHANCEMENTS -----------------------------//
+        d3.selectAll(`#${settings.svgID} text`)
+            .attr('role', 'presentation')
+            .attr('aria-hidden', true)
+
+    //---------------------------- 7. CHART INTERACTION METHODS -----------------------------//
 
     // Chart tooltip (slicer)
     function showChartTooltip(ev){
