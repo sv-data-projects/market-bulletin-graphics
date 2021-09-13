@@ -110,6 +110,11 @@ Colours are mostly referenced throughout the CSS using [CSS Variable names](http
 Some visualisations contain more illustrative graphic layers. These are SVG-based graphics and illustrations whose code is copied into HTML code (note: SVG is web-native HTML). This SVG code can be directly edited but for the most part, these illustration were created in a vector graphics editor, cleanup up in the [SVG OMG](https://jakearchibald.github.io/svgomg/) tool, and imported into the HTML code. 
 Further (data vis) SVG is added over the top using JavaScript and [D3.js](https://d3js.org/) 
 
+## A note on SVG (and general) accessibility
+Best efforts have been made to make data visualisations accessible - particularly for screen readers and keyboard-only users. On the positive side, SVG text elements are natively accessible through the DOM, and both `Title` and `Description` tags have been programmatically added as children to main SVG elements, as well appropriate reference attributes and [WCAG ARIA roles](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles). However providing optimised accessed to data encoded in visual forms (e.g. charts) - through listed elements for screen readers - and for hovered tooltips, is limited (although as mentioned, visible key text elements can be reached). More effort could be done here (and to improve accessibility in general). The rationale for not going further (at this time) is simply a lack of time, and the expectation that some design implications would take an unreasonable amount of time to resolve.
+
+For visual contrast accessibility, again best efforts have been made to reach the AA minium for text. Exceptions have been made in more illustrative graphics where (again), re-design efforts would take an unreasonable amount of time to resolve. See also, the [design proposal for extending and standardising the colour palette used for waste materials](https://docs.google.com/spreadsheets/u/1/d/1fLZHGZMFQR2Uky6g_XLiJ2T1a5aK5S29b-5Gr7N_9nY/edit#gid=918506449).
+
 &nbsp;
 ***
 &nbsp;
@@ -184,9 +189,9 @@ Each of these applications also loads the shared:
 
 ## iii. Value chain price
 ### a Diagram for displaying an comparing sub-material prices
-`/value-chain-price`: This application renders a collection simple value chain flow graphic (cutomised for each material) with positioned sub-material labels and prices (for a specified month). 
-- The layout and placement of each value chain node and sub-material price label is configured in the `js/main.js` file (refer to the objects for `settings.geometry.chain` and `settings.geometry.price`)
-- Note: Sub-material names must match the names in the input data table. 
+`/value-chain-price`: This application renders a collection simple value chain flow graphic (customised for each material) with positioned sub-material labels and prices (for a specified month). 
+- The layout and placement of each value chain node and sub-material price label is configured in the `js/main.js` file (refer to the objects for `settings.geometry.chain` and `settings.geometry.price`). This is how the sub-material price label positions and the shape of each leader line can be altered 
+- For sub-material price to appear in the value chain graphic, its "name" in the source data file must match the name in the `settings.geometry.price`object (i.e. **sub-material names are hard-coded in the JS code/data object to and need to be in sync with changes to the source data naming convention**). Mismatched names (or names simply missing from the `settings.geometry.price`object),  will mean that the sub-material price label is not displayed. This behaviour can be used to hide sub-material prices from appearing (e.g. either delete the column from the source data, or alter the name or remove the sub-material from the `settings.geometry.price`object - all will cause a naming mismatch.) 
 
 &nbsp;
 ## iv. Kerbside collection flows

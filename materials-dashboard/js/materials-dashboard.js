@@ -530,7 +530,7 @@
                 .html(`Performance to ${monthYear}`)
             const perfTblHeader =   cardContainer.append('div').classed('material-price-performance-table-container header', true)
             perfTblHeader.append('div').classed('table-data material-price-trend-header', true).html('12mth trend')
-            perfTblHeader.append('div').classed('table-data material-price-comp-header', true).html('Price history and performance vs last')
+            perfTblHeader.append('div').classed('table-data material-price-comp-header', true).html('Price history and performance vs last...')
 
             perfTblHeader.append('div').classed('table-data material-price-lastMth-header align-right', true).html('Month')
             perfTblHeader.append('div').classed('table-data material-price-3mth-header align-right', true).html('3 mth ave.')

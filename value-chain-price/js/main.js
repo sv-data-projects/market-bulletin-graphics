@@ -34,7 +34,7 @@
         materialSubtypes: {},           // Ordered lists of commodity prices names per material
     }
 
-    // Positioning of nodes and links
+    // Positioning of nodes and links: The settings.geometry.chain object also sets the value chain labels
     settings.geometry.chainY = settings.dims.height * 0.5 
     settings.geometry.chain = {
         'Paper and cardboard': {
@@ -112,28 +112,55 @@
         }
     }
 
-    // Positioning and labellin oof individual price labels
+    // Positioning and labelling of individual price labels
+    // *** Sub material labels will show IF MATCHED TO THE SAME ABLE IN THE SOURCE ****
     settings.geometry.price = {
         'Paper and cardboard': {
             'MRF output':{
                 label: 'Reprocessed fibre',
                 labelPos: {
-                    x: settings.dims.width * 0.45,    
+                    x: settings.dims.width * 0.55,    
                     y: settings.dims.height * 0.235 
                 },
                 subMaterials: {
+                    // Summarised sub-material prices"
                     'Fibre – Mixed paper and cardboard': {
                         label: 'Mixed paper and cardboard',
-                        labelXOffset: settings.dims.width * 0,
-                        x: settings.dims.width * 0.13,
-                        y: settings.dims.height * 0.275
+                        labelXOffset: settings.dims.width * -0.0375,
+                        x: settings.dims.width * 0.09,
+                        y: settings.dims.height * 0.075
                      },
                     'Fibre – Old corrugated cardboard': {
                         label: 'Old corrugated cardboard',
-                        labelXOffset: settings.dims.width * 0,
-                        x: settings.dims.width * 0.12,
-                        y: settings.dims.height * 0.15
-                     }
+                        labelXOffset: settings.dims.width * -0.0375,
+                        x: settings.dims.width * 0.10,
+                        y: settings.dims.height * 0.175
+                     },
+                    // Summarised sub-material prices",
+                    'Fibre – Boxboard/Cartonboard': {
+                        label: 'Boxboard and Cartonboard',
+                        labelXOffset: settings.dims.width  * -0.0375,
+                        x: settings.dims.width * 0.11,
+                        y: settings.dims.height * 0.275
+                     },
+                    'Fibre – Liquid cardboard – Aseptic': {
+                        label: 'Liquid cardboard (aseptic)',
+                        labelXOffset: settings.dims.width * 0.0375,
+                        x: settings.dims.width * 0.14,
+                        y: settings.dims.height * 0.075
+                     },
+                    'Fibre – Liquid cardboard – Gable top': {
+                        label: 'Liquid cardboard (gable top)',
+                        labelXOffset: settings.dims.width * 0.0375,
+                        x: settings.dims.width * 0.15,
+                        y: settings.dims.height * 0.175
+                     },
+                    'Fibre – Newsprint and magazine': {
+                        label: 'Newsprint and magazine',
+                        labelXOffset: settings.dims.width * 0.0375,
+                        x: settings.dims.width * 0.16,
+                        y: settings.dims.height * 0.275
+                     },
                 }
             },
             'Virgin': {
@@ -162,39 +189,51 @@
             'MRF output':{
                 label: 'Reprocessed plastic resin',
                 labelPos: {
-                    x: settings.dims.width * 0.55,    
+                    x: settings.dims.width * 0.575,    
                     y: settings.dims.height * 0.2
                 },
                 subMaterials: {
                     'Plastic – HDPE (2) - Coloured': { 
                         label: 'HDPE (2) - Coloured',
-                        labelXOffset: settings.dims.width * -0.0375,
+                        labelXOffset: settings.dims.width * -0.05,
                         x: settings.dims.width * 0.09,
                         y: settings.dims.height * 0.125
                     },
                     'Plastic – HDPE (2) - Clear': { 
                         label: 'HDPE (2) - Clear',
-                        labelXOffset: settings.dims.width * -0.0375,
+                        labelXOffset: settings.dims.width * -0.05,
                         x: settings.dims.width * 0.1,
                         y: settings.dims.height * 0.2
                     },
                     'Plastic – PET (1)': {
                         label: 'PET (1)',
-                        labelXOffset: settings.dims.width * -0.0375,
+                        labelXOffset: settings.dims.width * -0.05,
                         x: settings.dims.width * 0.11,
                         y: settings.dims.height * 0.275
                     },
                     'Plastic – Mixed (1–7)': { 
                         label: 'Mixed (1–7)',
-                        labelXOffset: settings.dims.width * 0.0375,
-                        x: settings.dims.width * 0.145,
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.13,
                         y: settings.dims.height * 0.125
                     },
                     'Plastic – Mixed (3–7)': { 
                         label: 'Mixed (3–7)',
-                        labelXOffset: settings.dims.width * 0.0375,
-                        x: settings.dims.width * 0.155,
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.14,
                         y: settings.dims.height * 0.2
+                    },
+                    'Plastic – LDPE film': { 
+                        label: 'LDPE film',
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.15,
+                        y: settings.dims.height * 0.275
+                    },
+                    'Plastic – Other': { 
+                        label: 'Other plastics',
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.12,
+                        y: settings.dims.height * 0.05
                     }
                 }
             },
@@ -213,7 +252,7 @@
                     },
                     'Plastic – HDPE (2) virgin resin': { 
                         label: 'HDPE (2)',
-                        labelXOffset: settings.dims.width *  -0.0375,
+                        labelXOffset: settings.dims.width * -0.0375,
                         x: settings.dims.width * 0.71,
                         y: settings.dims.height * 0.75
                     },
@@ -255,14 +294,26 @@
                     'Steel': {
                         label: 'Steel',
                         labelXOffset: settings.dims.width * 0,
-                        x: settings.dims.width * 0.525,
-                        y: settings.dims.height * 0.125
+                        x: settings.dims.width * 0.51,
+                        y: settings.dims.height * 0.05
                     },
                     'Aluminium': { 
                         label: 'Aluminium',
-                        labelXOffset: settings.dims.width * 0,
-                        x: settings.dims.width * 0.54,
-                        y: settings.dims.height * 0.2
+                        labelXOffset: settings.dims.width * 0.0375,
+                        x: settings.dims.width * 0.515,
+                        y: settings.dims.height * 0.125
+                    },
+                    'Aluminium – Beverage': { 
+                        label: 'Aluminium (beverage)',
+                        labelXOffset: settings.dims.width * 0.0375,
+                        x: settings.dims.width * 0.52,
+                        y: settings.dims.height * 0.215
+                    },
+                    'Aluminium – Non-beverage': { 
+                        label: 'Aluminium (non-beverage)',
+                        labelXOffset: settings.dims.width * 0.0375,
+                        x: settings.dims.width * 0.525,
+                        y: settings.dims.height * 0.305
                     },
                 }
             },
@@ -276,13 +327,13 @@
                     'Steel (LME steel scrap)':{
                         label: 'Steel (LME steel scrap)',
                         labelXOffset: settings.dims.width * 0,
-                        x: settings.dims.width * 0.525,
+                        x: settings.dims.width * 0.51,
                         y: settings.dims.height * 0.825
                     },
                     'Aluminium (LME aluminium alloy)': { 
                         label: 'Aluminium (LME aluminium alloy)',
                         labelXOffset: settings.dims.width *  0,
-                        x: settings.dims.width * 0.54,
+                        x: settings.dims.width * 0.52,
                         y: settings.dims.height * 0.7
                     }
                 }
@@ -298,10 +349,46 @@
                 subMaterials: {
                     'Glass – Mixed': {
                         label: 'Mixed glass',
-                        labelXOffset: settings.dims.width * 0,
-                        x: settings.dims.width * 0.125,
-                        y: settings.dims.height * 0.225
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.13,
+                        y: settings.dims.height * 0.05
                     },
+                    'Glass – Green (CDS)': {
+                        label: 'Green glass (CDS)',
+                        labelXOffset: settings.dims.width * -0.05,
+                        x: settings.dims.width * 0.09,
+                        y: settings.dims.height * 0.12
+                    },
+                    'Glass – Amber (CDS)': {
+                        label: 'Amber glass (CDS)',
+                        labelXOffset: settings.dims.width * -0.05,
+                        x: settings.dims.width * 0.1,
+                        y: settings.dims.height * 0.20
+                    },
+                    'Glass – Flint (CDS)': {
+                        label: 'Flint glass (CDS)',
+                        labelXOffset: settings.dims.width * -0.05,
+                        x: settings.dims.width * 0.11,
+                        y: settings.dims.height * 0.28
+                    },
+                    'Glass – Green': {
+                        label: 'Green glass',
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.14,
+                        y: settings.dims.height * 0.12
+                    },
+                    'Glass – Amber': {
+                        label: 'Amber glass',
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.15,
+                        y: settings.dims.height * 0.20
+                    },
+                    'Glass – Flint': {
+                        label: 'Flint glass',
+                        labelXOffset: settings.dims.width * 0.05,
+                        x: settings.dims.width * 0.16,
+                        y: settings.dims.height * 0.28
+                    }
                 }
             },
             'Virgin': {
@@ -508,7 +595,7 @@
 
         // Toggle title so that it doesn't appear as a default tooltip
         vis.on('mouseover', () => document.getElementById('svgTitle').innerHTML = null )
-            .on('mouseout', () =>  document.getElementById('svgTitle').innerHTML = svgTitleText )
+            .on('mouseout', () => document.getElementById('svgTitle').innerHTML = svgTitleText )
 
         // Link shape generator
         const linkHorizontal = d3.linkHorizontal()
@@ -589,39 +676,43 @@
         // b. Reprocessed sub-material prices on upper side
         Object.entries(pricesData['MRF output']).forEach(([subMaterial, value], i) => {
             // Get data object and setup layers
-            const obj = settings.geometry.price[settings.state.material]['MRF output'].subMaterials[subMaterial]
+            if(settings.geometry.price[settings.state.material]['MRF output'].subMaterials[subMaterial]){
+                const obj = settings.geometry.price[settings.state.material]['MRF output'].subMaterials[subMaterial]
 
-            const group = pricesGroup.append('g')
-                    .classed('mrf-material-group  prices-group mrf', true)
-                    .attr('transform', `translate(${obj.x}, ${obj.y})`)
-            const textGroup = group.append('g')
+                const group = pricesGroup.append('g')
+                        .classed('mrf-material-group  prices-group mrf', true)
+                        .attr('transform', `translate(${obj.x}, ${obj.y})`)
+                const textGroup = group.append('g')
 
-            // Add price and sub-material label
-            textGroup.append('text')
-                .classed(`price-label-value recovered ${helpers.slugify(subMaterial)}`, true)
-                .attr('x', obj.labelXOffset + 5)
-                .attr('y', 0)
-                .text(helpers.numberFormatters.formatCostInteger(value))
+                // Add price and sub-material label
+                textGroup.append('text')
+                    .classed(`price-label-value recovered ${helpers.slugify(subMaterial)}`, true)
+                    .attr('x', obj.labelXOffset + 5)
+                    .attr('y', 0)
+                    .text(helpers.numberFormatters.formatCostInteger(value))
 
-            textGroup.append('text')
-                .classed(`price-label recovered ${helpers.slugify(subMaterial)}`, true)
-                .text(obj.label)
-                .attr('x', obj.labelXOffset + 5)
-                .attr('dy', 0)
-                .attr('y', 22)
-                .call(helpers.wrap, settings.geometry.nodeRadius * 3, 1.1)
+                textGroup.append('text')
+                    .classed(`price-label recovered ${helpers.slugify(subMaterial)}`, true)
+                    .text(obj.label)
+                    .attr('x', obj.labelXOffset + 5)
+                    .attr('dy', 0)
+                    .attr('y', 22)
+                    .call(helpers.wrap, settings.geometry.nodeRadius * 3, 1.1)
 
-            // Add leader line using text group bounding box to extend leader line
-            const linkPoints = points = {
-                    source: [0, settings.geometry.chainY - obj.y - (obj.leaderStartYOffset ? obj.leaderStartYOffset  : 0)],
-                    target: [obj.labelXOffset, settings.geometry.chainY - obj.y - settings.geometry.linkCurveYoffset ]
-                },
-                vLength = (settings.geometry.chainY - obj.y - settings.geometry.linkCurveYoffset),
-                leaderPath = `${linkVertical(points)} v${-vLength}`
+                // Add leader line using text group bounding box to extend leader line
+                const linkPoints = points = {
+                        source: [0, settings.geometry.chainY - obj.y - (obj.leaderStartYOffset ? obj.leaderStartYOffset  : 0)],
+                        target: [obj.labelXOffset, settings.geometry.chainY - obj.y - settings.geometry.linkCurveYoffset ]
+                    },
+                    vLength = (settings.geometry.chainY - obj.y - settings.geometry.linkCurveYoffset),
+                    leaderPath = `${linkVertical(points)} v${-vLength}`
 
-            group.append('path')
-                .classed(`price-label-leader recovered`, true)
-                .attr('d', leaderPath )
+                group.append('path')
+                    .classed(`price-label-leader recovered`, true)
+                    .attr('d', leaderPath )
+            } else {
+                console.log(`The sub-material "${subMaterial}" (in the source data) is not defined in the visualisation (see 'settings.geometry.price' object).`)
+            }
         })
 
         // 5. ADD ANNOTATION
