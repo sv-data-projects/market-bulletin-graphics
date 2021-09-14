@@ -159,7 +159,7 @@ The following is an outline of how the code for each  Market Bulletin visualisat
 > The best way to read code is to look through it. Extensive code comments have been included in all scripts to help describe the roles of each function and object. 
 
 ##  The Market Bulletin 'app suite'
-There are five separate applications (contained in this repo in separate folders and published URL paths)that support the range of Market Bulletin graphics.  Each application is described below:
+There are six separate applications (contained in this repo in separate folders and published URL paths)that support the range of Market Bulletin graphics.  Each application is described below:
 
 Each of these applications also loads the shared:
 - ../core/js/core.js script file that contains a set of links to .tsv data tables
@@ -202,57 +202,19 @@ Each of these applications also loads the shared:
 
 &nbsp;
 ## v. End market capacity 'heatmap' tables
+### a styled HTML to overcome the limitations of the CMS
 `/market-capacity-tables`: This is a small application to translate qualitative assessment tables (entered in the Google Sheet / .tsv file) into a styled HTML table that can be embedded in the Market Bulletin. 
 - This application is made because of the limitations of the SV CMS to display tables with coloured cells
 - Refer to the `js/main.js` script file to edit/update any colour coding or assessment options.
 
 &nbsp;
-# WASTE REPORT GRAPHICS: VISUALISATION OPTIONS
-[Return to contents](#contents)
-In most cases, graphics are designed to be flexible enough for use in print and digital mediums. The exceptions are mostly interactive graphics that have information designed to be displayed only when a user interacts with part of the graphic. 
+## vi. Bin composition graphic
+### a general purpose 'draft' 
+`/bin-composition`: This application renders a graphic of a bin with layers for different waste materials (and contamination), scaled by volume,
+- This application was made for use 'in future' market bulletin version but did not have an adequate data or design brief. Accordingly while fully functional and designed as being 'as general purpose as possible', it should be treated as a draft until further clarification on its use and its data sources are made.
+- As the context of use is unknown, this graphic contains no on screen selectors, however a query string for ?month=[mth-year] can be used to select the month of data to show.
 
 &nbsp;
-> ## Using query strings for setting visualisation options
-> Most data visualisations have been developed to accept a [query string](https://en.wikipedia.org/wiki/Query_string) that is added to its URL. Query strings are simply an specially formatted text string at the end of a URL, after a '?". You can think of a query string as sending a bunch of 'settings' for the data vis application to apply. This means that the application must first be setup to do something with query string it receives. The table below outlines what options are available for each graphic.
->
->You can read about how query strings are structure [here](https://en.wikipedia.org/wiki/Query_string#Structure) - it'll only take a few seconds or minutes to work out. But another simple way to figure them out is to see an example: a visualisation might be setup to receive a 'year' parameter from a query string, in a financial year format like '2018-19'. It would  then use that 'specified year' to display the right data. 
-> - The query string would be simply be **'?year=2018-19'** and the URL would look something like www.xxxx.com/vis.html?**year=2018-19**. 
-> - Multiple parameters can be appended wih an '&'. So www.xxxx.com/vis.html**?year=2018-19&showGlass=false** would also send the value 'false' for the parameter 'showGlass'.
->
-> And thats all there is to query strings!
-
-&nbsp;
-
-## Waste report graphics and their options
-| Visualisation name | html filename | Query parameter name | Query parameter value format |  Query parameter default |  Query parameter description
-| --- | --- | --- |---| ---| ---|
-| Victorian waste flow illustrative graphic (full page) | waste-vic-flow-infographic.html | year | YYYY-YY |  2019-20 | Specifies FY data to display
-| | | extended-typography | true, false | true |  Show title text with with handwriting typeface
-| Victorian waste flows summary graphic (half page 'flow loop')| waste-vic-flow-summary-graphic.html |  year | YYYY-YY | 2019-20 | Specifies FY data to display
-| | | mode | dark, light | light | Show the graphic with dark mode colour scheme
-| Kerbside waste illustrative summary infographic (half page)| kerbside-flow-infographic.html |  year  | YYYY-YY | 2019-20 | Specifies FY data to display
-| | | extended-typography | true, false | true | Show title text with with handwriting typeface
-| Kerbside waste illustrative infographic (full page)| kerbside-summary-infographic.html | YYYY-YY |  year | 2019-20 | Specifies FY data to display
-| | | extended-typography | true, false | true | Show title text with with handwriting typeface
-| Kerbside bin composition graphic (single bin)| kerbside-bin-composition.html | year | YYYY-YY | 2019-20
-| | | yellow-bin-lid | true, false | false | Whether to colour bin lid yellow (note: default is false colour clashes with material colour)
-| Victorian waste flow (sankey) diagram (full page)| waste-vic-flow-sankey.html |  year | YYYY-YY | 2019-20 | Specifies FY data to display
-| Waste metrics trends tables (headlines and by material summary) | waste-trends-summary-table.html |  year | YYYY-YY | 2019-20 | Specifies FY data to display
-| Waste diversion radial bar chart and table | waste-diversion-by-material.html |  year |  YYYY-YY | 2019-20 | Specifies FY data to display
-| | | mode | dark, light | light | Show the graphic with dark mode colour scheme
-| | | layout | portrait, landscape, chart-only | portrait | Layout options for chart and accompanying data table (or to not show the table)
-| Victorian recovered waste export map | waste-export-map.html |  year |  YYYY-YY | 2019-20 | Specifies FY data to display
-| Victorian WRRG waste data map | wrrg-map.html|  year |  YYYY-YY | 2019-20 | Specifies FY data to display
-| | | showGlass | true, false | true | Whether to show the layout with glass collection data (for WRRGs with collection/data)
-| | | colourScale | ramp, categorical | ramp | Whether to show the WRRG regions with data encoded in a colour ramp, or as multi-coloured categorical colours (not recommended)
-
-## Further customisation of waste report graphics 
-Some visualisations can be tweaked and customised further:
-- **Victorian recovered waste export map:** Customisation of the country to country links can be made via the source data table ('exportWasteData'). This allows for the curved links to be adjusted by country, and for the 'path endpoint' to be adjusted
-- **Victorian waste flow (sankey) diagram:** The sankey layout is customised within using hte data fields of 'level' and 'sourceKey' (and fitered by the field 'sankey') in the source data table ('wasteByMaterialFlow'). These layout configurations reasonably complex and adjustments are likely to require some code changes.
-
-## Interactive waste report graphics
-Section TBA: this will cover any animation or customised interaction options for web-first graphics (currently being considered)
 
 
 &nbsp;

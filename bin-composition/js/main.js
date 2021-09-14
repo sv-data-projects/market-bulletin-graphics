@@ -15,8 +15,8 @@
 ////////////////////////////////////
 
     const settings  = {
-        month:           "Jan-2021",
-        queryParameters:       {},        // Used to store URL query string items
+        month:                  "",         // Month is set by query string, or defaults to the latest month in the data
+        queryParameters:        {},          // Used to store URL query string items
         state: {                            // Used to store material and data state
             material:   null,                           
             date:       null                        
@@ -106,6 +106,8 @@
         // Extract Date lists
         data.schema.lists.date = [...new Set(binData.map(d => d.date))].sort((a, b) => b - a)      // Take unique only (for flows data)
         data.schema.lists.month = data.schema.lists.date.map(d => helpers.timeFormat.toMthYear(d) )
+        // Set date to be latest month
+        settings.month = data.schema.lists.month[0]
         // Extract materials list (sorted alphabetically)
         data.schema.lists.materials = [...new Set(  
             Object.keys(binData[0])

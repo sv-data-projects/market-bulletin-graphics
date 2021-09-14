@@ -23,7 +23,7 @@
             }
             .vis-list-type{
                 font-weight: 500;
-                font-size: 1.25rem;
+                font-size: 1rem;
                 margin: 2rem 0rem 1rem;
                 text-transform: uppercase;
                 color: var(--secondaryBottleGreen);
@@ -50,12 +50,11 @@
             <p> The following links are grouped by pages in the <a href="https://www.sustainability.vic.gov.au/research-data-and-insights/waste-data/recovered-resources-market-bulletin-v2-0/market-bulletin-menu" target="_blank">draft HTML version</a> 
                 of the Market Bulletin, as built in Craft CMS (note: link available at time of writing in mid-September, 2021 and should be updated once a production link is established)
 
-            <p class = 'highlight'>IN PROGRESS TASKS - ETA 20-Sep</p>
+            <p class = 'highlight'>Notes:</p>
             <ul>
-                <li>Accessibility optimisation (for screen readers)</li>
-                <li>Flows diagram mostly complete pending: data and treatment/labelling of contamination flows. The 'system' view may eventually be be removed or completed with better illustrations </li>
-                <li>Value chain price diagrams are pending feedback on which sub-material prices to include, and where all should be positioned </li>
-                <li>An option to download the source data series data may be included </li>
+                <li>Flows diagram near complete (final ETA Sept 19)</li>
+                <li>Value chain price diagrams include all sub-material prices Instructions to limit/hide and reposition are in the documentation </li>
+                <li>Documentation for adapting the bin composition graphic (future need) is included in the github and GSheet documentation</li>
             </ul>
         </div>
 
@@ -124,11 +123,16 @@
              <hr>
 
             <div class ="highlight">Extra options and graphic layouts not used in Market Bulletin</div> 
+            <div  class ="vis-list-type">Draft stage graphics</div> 
+            <ul>
+                <li><a href ="bin-composition/index.html">Bin graphic</a>: a general purpose bin composition graphic with month selectable via a query string</li>
+            </ul>
+
             <div  class ="vis-list-type">Unused dashboard and table components</div> 
-                <ul>
-                    <li><a href ="time-series-charts/destination-all-materials.html">Destination of all kerbside materials</a>: standalone chart</li>
-                    <li><a href ="value-chain-price/index.html">Value chain price diagram with in line text material selector </a>: alternative to tabbed material selector</li>
-                </ul>
+            <ul>
+                <li><a href ="time-series-charts/destination-all-materials.html">Destination of all kerbside materials</a>: standalone chart</li>
+                <li><a href ="value-chain-price/index.html">Value chain price diagram with in line text material selector </a>: alternative to tabbed material selector</li>
+            </ul>
             <ul>            
                 <li><a href ="materials-dashboard/all-components.html">Performance dashboard with date and material selector </a></li>
                 <li><a href ="materials-dashboard/all-components.html?material=Paper and cardboard">Paper and cardboard performance dashboard</a></li>
