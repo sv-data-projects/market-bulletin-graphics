@@ -19,6 +19,9 @@
     .dropdown-container select{
         font-size: 1.75vw;
     }
+    .stepper-nav{
+        opacity: 0;
+    }
     .stepper-container nav a{
         color: var(--secondaryGrey);
         font-size: 2vw;
@@ -153,28 +156,31 @@
 
     /* SVG Flow visualisation typographic elements */
     .title-label-group{
-        cursor: pointer;
         text-transform: uppercase;
     }
     .title-label{
         font-size:      60px;
         font-weight:    600;
         text-anchor:    middle;
+        pointer-events: none;
     }
     .title-label.small{
         font-size: 32px;
     }
     .title-label.collection,
     .node-group-arrow.collection{ 
-        fill: url(#collection-gradient)
+        fill: url(#collection-gradient);
+        pointer-events: none;
     }
     .title-label.destination,
     .node-group-arrow.destination{
-        fill: url(#destination-gradient)
+        fill: url(#destination-gradient);
+        pointer-events: none;
     }
     .title-label.recycling,
     .node-group-arrow.recycling{
-        fill: url(#recycling-gradient)
+        fill: url(#recycling-gradient);
+        pointer-events: none;
     }
     text.label.node,
     text.label.node.unit{
@@ -215,7 +221,7 @@
     }
     .system-contamination.title{
         font-weight: 800;
-        font-size: 100px;
+        font-size: 80px;
     }
     .system-contamination.sub-title{
         font-weight: 800;
@@ -223,7 +229,8 @@
     }
     .system-recovery{
         font-weight: 800;
-        fill:  var(--xCharcoal);
+        fill:  var(--xCharcoal);   
+        text-anchor: end;
     }
     .system-recovery.title{
         fill:  var(--xCharcoal);
@@ -232,6 +239,9 @@
     }
     .system-recovery.sub-title{
         font-size: 80px;
+    }
+    .system-recovery.monthly-title{
+        font-size: 30px;
     }
     .system-title-figure{
         font-weight: 800;
@@ -344,8 +354,7 @@
     }
     .link,
     .annotationPath, 
-    .nodeLabelPath,
-    .bin-illustration-group path{
+    .nodeLabelPath{
         fill: none;
     }
     .link.collection_destination,
@@ -372,7 +381,14 @@
     }
 
     /* Illustration styling */
-    .flow-icon{
+    .iso-illustration{
         transition: transform 1s ease-in-out;	
         pointer-events: none;
+        fill: var(--secondaryGrey);
+    }
+    .iso-illustration.line{
+        stroke: var(--secondaryGrey);      
+        stroke-width: 0.65px;
+        fill: #fff;
+
     }

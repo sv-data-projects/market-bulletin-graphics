@@ -16,7 +16,7 @@ It is hoped that over time however, these graphics can be updated by other contr
 
 &nbsp;
 ## Known bugs and to do's
-List TBA
+None
 
 &nbsp;
 ***
@@ -45,6 +45,7 @@ List TBA
         - [iii. Value chain price](#iii-value-chain-price)
         - [iv. Kerbside collection flows](#iv-kerbside-collection-flows-interactive-flow-graphic)
         - [v. End market capacity 'heatmap' tables](#v-end-market-capacity-heatmap-tables)
+        - [vi. Bin composition graphic (draft)](#vi-bin-composition-graphic-draft)
 
 **Reference information**
 &nbsp;

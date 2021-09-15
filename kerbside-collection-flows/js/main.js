@@ -273,7 +273,6 @@
                 nodeLayerTarget = nodeLayer.append('g').classed('node-group target layer', true),
                 annotationLinkLayer = annotationLayer.append('g').classed('annotation-linkPaths-group' , true ), 
                 linkLabels = annotationLayer.append('g').classed('annotation-linkLabels' , true ),
-                collectionIllustrationLayer = illustrationLayer.append('g').classed('illustration-collection-layer' , true ),
                 isometricIllustrationLayer = illustrationLayer.append('g').classed('illustration-isometric-layer' , true ),
                 titleLayer = annotationLayer.append('g').classed('annotation-titleLabels' , true ),
                 directionLayer = annotationLayer.append('g').classed('annotation-direction' , true )
@@ -746,13 +745,12 @@
                 .attr('id', 'step-annotation')
                 .classed('title-text', true)
                 .attr('x', settings.dims.width * 0.5)
-                .attr('y', settings.dims.height * 0.5)
+                .attr('y', settings.dims.height * 0.525)
                 .attr('dy', 0)
                 .text(settings.annotation.commentary['step-1'])
 
 
         //-------------- INTRO & SVG ILLUSTRATION LAYER ---//
-        await vis.flow.methods.renderCollectionIllustrations(collectionIllustrationLayer)
         await vis.flow.methods.renderIsometricIllustrations(isometricIllustrationLayer)
         await vis.flow.methods.scene.intro(settings.animation.introDuration)
 
@@ -832,50 +830,74 @@
         const landfillVolume = settings.nodeSize.target.filter(d => Object.keys(d)[0] === 'Landfill')[0].Landfill,
              totalCollected = d3.sum(settings.nodeSize.target.map(d => Object.values(d)[0]) )
 
-        const buildings = layer.attr('id', 'flow-icon-building')
-            .append('use').attr('href', '#icon-building')
-            .classed('flow-icon', true)
-            .attr('transform', 'translate(10, 25) scale(0.25)')
-                    
-        const recyclingChain = layer.attr('id', 'flow-icon-recycling')
-            .append('use').attr('href', '#icon-recycling')
-            .classed('flow-icon', true)
-            .attr('transform', 'translate(750, -50) scale(0.65)')
+        const icons = {
+            arrowUpLeft:        'm-24.981-7.719 5.583 18.235c.001.005.007.007.008.012a.415.415 0 0 0 .019.048c.004.008.003.015.008.023.005.01.016.013.022.022.022.031.045.06.076.083.01.01.02.015.03.023.013.008.023.016.036.022a.388.388 0 0 0 .177.047.395.395 0 0 0 .115-.017c.006-.002.011-.007.018-.01.016-.005.03-.013.045-.02.006-.003.013-.002.019-.005l6.114-3.529 23.74 13.706h.002c.006.004.013.003.019.006a.388.388 0 0 0 .175.046h.002c.064 0 .122-.019.174-.046.007-.003.014-.002.02-.006h.001l13.38-7.725c.015-.01.024-.023.037-.033.022-.017.043-.032.06-.054.017-.019.03-.04.043-.061a.326.326 0 0 0 .049-.147c.001-.017.009-.03.009-.047V.114c0-.008-.004-.015-.005-.023a.413.413 0 0 0-.04-.152c-.004-.008-.004-.015-.008-.023-.004-.007-.011-.01-.015-.017a.438.438 0 0 0-.11-.112c-.008-.004-.012-.011-.019-.015L7.376-10.292v-7.058c0-.009-.004-.016-.005-.023 0-.02-.005-.04-.009-.06-.004-.017-.006-.035-.013-.052a.43.43 0 0 0-.018-.04c-.004-.008-.004-.015-.008-.023-.005-.009-.014-.014-.02-.023-.01-.015-.019-.029-.031-.042-.011-.012-.023-.022-.035-.033a.385.385 0 0 0-.187-.088c-.01-.002-.018-.008-.029-.01l-31.583-3.223c-.008-.001-.016.002-.024.001-.006 0-.012-.004-.019-.004-.02 0-.037.009-.056.012-.02.002-.04 0-.06.005-.006.002-.01.008-.017.01-.026.01-.049.024-.073.04-.02.013-.042.023-.059.04-.018.016-.031.037-.046.057-.011.014-.026.026-.034.041l-.009.021c-.01.021-.014.044-.02.067-.006.022-.016.04-.019.061 0 .007.002.014.001.021 0 .007-.003.013-.003.02v12.739c0 .02.008.038.012.058.004.02 0 .04.007.06zm25.455-6.33c-.007.003-.01.011-.017.014-.023.015-.042.035-.062.055a.436.436 0 0 0-.05.057c-.005.007-.012.011-.016.019-.009.014-.01.03-.015.046a.39.39 0 0 0-.026.076.392.392 0 0 0-.006.075c0 .025.001.05.006.074a.375.375 0 0 0 .026.077c.006.015.007.031.015.046.003.006.01.009.014.014a.38.38 0 0 0 .13.131l.003.001L23.82.114 11.228 7.383l-23.74-13.706c-.008-.004-.015-.004-.023-.008a.593.593 0 0 0-.153-.041c-.007 0-.014-.004-.022-.004-.008 0-.014.004-.022.005a.337.337 0 0 0-.052.006c-.02.003-.037.009-.055.014l-.046.02c-.007.003-.015.003-.022.007l-5.882 3.396-5.264-17.193 29.779 3.04zm-19.1 11.94 5.522-3.188V6.53l-5.522 3.187zm6.312-3.188L10.833 8.067v11.828L-12.314 6.53ZM11.623 8.067l12.59-7.27v11.828l-12.59 7.27Zm-31.04-10.345v10.04l-4.792-15.656v-10.042ZM1.462-13.707l5.126-2.96v5.92z',
+            arrowUpRight:       'M-11.03 20.919h.003l23.74-13.707 6.112 3.53c.005.004.013.002.018.005.015.008.03.015.046.02.007.004.011.008.017.01a.386.386 0 0 0 .292-.03c.013-.005.024-.013.037-.022a.395.395 0 0 0 .106-.106c.006-.009.017-.013.023-.022.004-.007.004-.015.007-.022a.323.323 0 0 0 .02-.048c0-.005.006-.007.007-.012l5.585-18.236c.005-.02.003-.039.005-.058.003-.02.012-.038.012-.057v-12.74c0-.006-.003-.012-.004-.02 0-.006.003-.013.002-.02-.002-.02-.013-.04-.019-.06-.006-.024-.01-.047-.02-.069-.003-.006-.005-.014-.009-.02l-.002-.003c-.008-.014-.022-.025-.032-.039-.014-.02-.028-.041-.046-.057-.017-.017-.039-.028-.06-.04a.352.352 0 0 0-.072-.04c-.006-.001-.01-.007-.018-.009-.019-.006-.039-.003-.058-.005-.02-.004-.037-.012-.057-.012-.007 0-.012.003-.019.004-.007 0-.015-.003-.023-.002L-7.02-17.745c-.01.002-.018.007-.029.01a.357.357 0 0 0-.102.03l-.04.025a.422.422 0 0 0-.079.065c-.012.014-.02.028-.03.042-.006.009-.016.014-.021.024-.005.007-.005.015-.008.022-.007.014-.013.026-.018.041-.006.017-.01.035-.013.052-.005.02-.009.04-.01.06 0 .008-.004.014-.004.022v7.059L-24.803-.23c-.008.004-.012.01-.018.016a.42.42 0 0 0-.111.111c-.005.006-.012.01-.016.017-.004.007-.003.015-.007.023a.364.364 0 0 0-.034.1.444.444 0 0 0-.007.053c0 .008-.004.014-.004.022v12.739c0 .016.007.03.01.047a.362.362 0 0 0 .016.08c.008.025.02.045.032.067.013.022.025.043.042.062.018.02.04.037.061.054.013.01.022.023.037.032l13.381 7.726h.002c.006.003.013.002.019.006a.38.38 0 0 0 .174.046h.002a.378.378 0 0 0 .176-.046c.006-.003.013-.003.019-.006zM-.475-13.365h.003a.386.386 0 0 0 .13-.132c.004-.005.011-.007.014-.014.01-.014.01-.03.015-.045a.35.35 0 0 0 .027-.077.392.392 0 0 0 .005-.075c0-.025 0-.05-.005-.074a.338.338 0 0 0-.027-.077c-.006-.015-.006-.031-.015-.046-.004-.007-.01-.01-.015-.017-.015-.023-.034-.04-.053-.06-.019-.019-.036-.037-.057-.05-.008-.006-.012-.013-.019-.017l-5.251-3.033 29.779-3.039L18.79-2.929 12.91-6.324c-.007-.004-.016-.003-.023-.007a.449.449 0 0 0-.102-.035.42.42 0 0 0-.05-.006c-.008 0-.015-.005-.023-.005-.007 0-.014.004-.021.005a.488.488 0 0 0-.107.02.445.445 0 0 0-.047.02c-.007.004-.015.003-.022.007l-23.74 13.706-12.591-7.27Zm24.687 5.47L19.417 7.762V-2.28l4.795-15.657ZM-10.83 8.065 12.317-5.298V6.527L-10.83 19.892ZM13.107-5.298l5.52 3.186V9.716l-5.52-3.189ZM-24.212.796l12.592 7.27v11.826l-12.592-7.27zm17.627-17.464 5.126 2.96-5.126 2.959z',
+            arrowDownLeft:      'M-24.999 20.61c.003.023.014.043.02.065.005.02.01.042.017.061.013.027.03.049.048.071.013.016.023.035.038.048.023.022.05.036.076.052.016.01.029.022.046.029.046.018.096.03.147.03l.04-.002L7.02 17.74c.02-.002.037-.012.056-.017.026-.007.051-.013.075-.024.023-.011.041-.026.061-.042.02-.015.041-.029.058-.048s.029-.04.042-.062c.013-.022.026-.042.035-.066.01-.025.012-.05.016-.078.003-.019.012-.036.012-.057v-7.059L24.803.225c.014-.009.023-.022.036-.032.022-.017.043-.033.061-.054.016-.02.029-.04.042-.062a.326.326 0 0 0 .049-.147c.002-.016.01-.03.01-.047v-12.738c0-.008-.005-.015-.006-.023a.413.413 0 0 0-.04-.152c-.004-.007-.004-.015-.008-.023-.004-.007-.011-.01-.015-.018a.292.292 0 0 0-.031-.04c-.013-.015-.026-.027-.04-.04-.013-.011-.025-.022-.04-.031-.007-.005-.01-.012-.018-.016l-13.381-7.725c-.015-.01-.03-.01-.047-.016a.383.383 0 0 0-.076-.026.341.341 0 0 0-.074-.005.38.38 0 0 0-.074.005.341.341 0 0 0-.077.027c-.015.006-.032.007-.046.015l-23.74 13.706-6.112-3.529c-.014-.008-.03-.008-.043-.014-.014-.006-.024-.017-.04-.021-.011-.004-.022-.001-.033-.004a.404.404 0 0 0-.292.052.336.336 0 0 0-.058.046.336.336 0 0 0-.052.06c-.007.01-.017.015-.022.026-.008.014-.009.029-.015.043-.006.014-.016.025-.021.04l-5.582 18.233c-.006.018-.004.04-.006.06-.003.02-.012.036-.012.057V20.57c0 .007.003.013.003.02.001.006-.002.013-.002.02zm6.21-30.424 5.88 3.395h.002c.05.029.105.039.16.044.012 0 .024.009.035.009h.001c.014 0 .027-.01.04-.011a.39.39 0 0 0 .155-.042h.002l23.74-13.706 12.59 7.269L.472.623C.465.626.462.633.455.638a.37.37 0 0 0-.06.053.372.372 0 0 0-.05.058C.338.756.331.76.327.767.32.782.318.798.313.813A.35.35 0 0 0 .287.89C.282.915.282.94.282.965a.308.308 0 0 0 .032.15c.005.016.006.032.014.047.004.006.01.008.014.014a.386.386 0 0 0 .13.13l.004.002L5.725 4.34l-29.779 3.04zM-24.21 8.188 6.585 5.045V16.99l-30.795 3.144zm31.58-3.6c0-.007.004-.013.002-.02 0-.01-.007-.019-.009-.03a.339.339 0 0 0-.032-.103L7.31 4.4a.398.398 0 0 0-.072-.086l-.032-.023c-.01-.008-.016-.018-.028-.025L1.461.965l22.752-13.136V-.345L7.374 9.375V4.609c0-.007-.003-.012-.003-.02z',
+            arrowDownRight:     'M24.983 7.718 19.4-10.517c-.005-.016-.016-.028-.023-.043-.005-.013-.006-.027-.013-.04-.006-.01-.015-.014-.02-.023a.435.435 0 0 0-.108-.107.374.374 0 0 0-.075-.036.389.389 0 0 0-.066-.02c-.024-.005-.05-.005-.076-.005a.367.367 0 0 0-.077.008c-.013.003-.023 0-.035.003-.015.004-.024.015-.04.02-.015.007-.029.008-.043.015l-6.112 3.529-23.74-13.704c-.014-.008-.03-.009-.044-.015a.38.38 0 0 0-.08-.026c-.023-.004-.044-.004-.07-.005-.026 0-.053 0-.08.006-.025.004-.046.014-.07.023-.016.007-.034.008-.051.017l-13.38 7.726c-.009.004-.011.011-.019.016l-.039.03a.358.358 0 0 0-.039.04c-.014.014-.023.027-.034.042-.002.007-.01.01-.014.017-.003.007-.003.014-.007.021a.304.304 0 0 0-.02.049.29.29 0 0 0-.014.053c-.003.018-.006.033-.007.05 0 .009-.004.016-.004.024V-.114c0 .017.007.032.01.048.004.028.006.054.015.08.008.024.02.045.034.067a.306.306 0 0 0 .102.115c.014.01.021.024.036.032l17.43 10.063v7.06c0 .02.008.038.012.058.005.026.007.05.015.075.01.025.024.045.036.068.014.021.024.042.042.06a.34.34 0 0 0 .059.05c.02.014.038.03.06.04.024.012.05.016.075.024.018.005.036.015.056.017l31.583 3.222a.393.393 0 0 0 .188-.028c.017-.007.031-.018.047-.028.025-.015.053-.03.075-.051.015-.015.026-.033.04-.05.016-.021.034-.043.045-.069.01-.02.014-.043.02-.066.006-.02.015-.039.017-.06.002-.007-.002-.013-.001-.02 0-.007.004-.013.004-.02V7.833c0-.019-.01-.036-.011-.055-.003-.02 0-.04-.006-.06zM-.473 1.308c.058-.033.1-.08.131-.131.004-.006.011-.008.014-.013.008-.015.008-.03.014-.044a.34.34 0 0 0 .027-.08c.005-.024.005-.048.005-.073 0-.025 0-.049-.005-.073a.33.33 0 0 0-.027-.08C-.32.8-.32.784-.328.77-.332.763-.34.76-.343.753-.357.73-.376.713-.395.693A.34.34 0 0 0-.455.64C-.462.636-.465.63-.472.625l-23.344-13.477 12.59-7.27 23.74 13.707h.002a.396.396 0 0 0 .392 0h.001l5.88-3.396 5.264 17.19-29.776-3.038Zm-6.111 3.739L24.21 8.19v11.945l-30.795-3.143ZM-24.21-.343v-11.825L-1.46.967l-5.716 3.301c-.011.007-.017.017-.028.024-.011.008-.023.015-.034.026a.303.303 0 0 0-.07.083c-.01.012-.016.024-.024.037a.569.569 0 0 0-.032.104c0 .01-.008.018-.008.028 0 .006.003.013.002.02 0 .007-.004.013-.004.02v4.768z',
+            bin:                'M-15.194 20.469c2.82-.076 4.565 2.832 4.158 5.134-.18 1.043-1.12 2.15-3.205 2.143-1.425-.032-2.945-2.003-3.16-3.411-.234-1.542.345-3.729 2.207-3.866zm-.714-1.514c2.584-.81 5.677-.224 7.298 3.131 1.226 3.538-1.004 6.228-3.04 6.536m-7.067-4.584c-.274-2.71 1.132-4.866 3.103-5.143 5.38-.345 7.137 6.318 5.424 8.511-1.53 1.735-2.776 1.673-3.913 1.654-2.522-.004-4.396-2.804-4.614-5.022zm9.332 3.295 8.372 4.315c1.433.815 2.76.707 3.864.193l12.687-6.762c.89-.47 1.71-1.602 1.996-3.542l4.894-34.453M1.753-2.196l-.415 34.468m-21.477-45.51 4.29 32.121M-.072-31.484c-.85-1.054-1.99-.957-2.839-.053l-1.288-.5-19.933 11.22c-1.205.747-.821 2.215.269 2.291-.027.463-.1 1.808-.1 1.808l2.304 1.166.015 1.571L-.966-2.835c1.593.744 3.15.862 4.652.052l18.872-10.171c.593-.412 1.031-1.096 1.104-2.418 1.023-.771 1.408-1.873 1.124-3.154m-43.166-1.042.158 1.012 16.85 9.144c.973.557 3.205.788 4.816.2l17.103-9.221c.487-.313.185-2.146.185-2.146M2.26-31.59l-20.363 11.36c-.347.263-.395.578.124.868l16.754 8.935c1.731.81 3.75.534 5.46-.248l15.39-8.19c1.18-.627 1.697-2.217.143-3.336zm-.956.662-1.147-.649-22.231 12.215c-.763.582-.393.975 0 1.365L-.852-6.704c1.448.561 2.932.627 4.343.124L24.085-17.45c.557-.546 1.007-1.265.311-1.951l-3.705-1.72'
+        }
+
+        const arrowGroup = layer.append('g').classed('arrow-group', true)
+        // Recovery arrows
+        arrowGroup.append('path').classed('iso-illustration', true)
+            .attr('d', icons.arrowUpRight)
+            .attr('transform', 'translate(1780, 950) scale(2.5)')
+        arrowGroup.append('path').classed('iso-illustration', true)
+            .attr('d', icons.arrowUpLeft)
+            .attr('transform', 'translate(1780, 500) scale(2.5)')
+        arrowGroup.append('path').classed('iso-illustration', true)
+            .attr('d', icons.arrowUpLeft)
+            .attr('transform', 'translate(990, 55) scale(2.5)')
+        arrowGroup.append('path').classed('iso-illustration', true)
+            .attr('d', icons.arrowDownLeft)
+            .attr('transform', 'translate(470, 55) scale(2.5)')
+
+        // Bins
+        const binGroup = layer.append('g').classed('bin-group', true)
+        binGroup.append('path').classed('iso-illustration line', true)
+            .attr('d', icons.bin)
+            .attr('transform', 'translate(330, 105) scale(2.5)')
+        binGroup.append('path').classed('iso-illustration line', true)
+            .attr('d', icons.bin)
+            .attr('transform', 'translate(225, 160) scale(2.5)')
+        binGroup.append('path').classed('iso-illustration line', true)
+            .attr('d', icons.bin)
+            .attr('transform', 'translate(120, 215) scale(2.5)')
 
         // Contamination rate
-        layer.append('text')
+        const contaminationLabel = layer.append('g').attr('transform', 'translate(50, 700)')
+        contaminationLabel.append('text')
             .attr('id', 'system-contamination-pct')
             .classed('title system-contamination', true)
-            .attr('transform', 'translate(50, 700)')
             .html(`${helpers.numberFormatters.formatPct1dec(landfillVolume/totalCollected)}`)
-        layer.append('text')
+        contaminationLabel.append('text')
             .classed('sub-title system-contamination', true)
-            .attr('transform', 'translate(50, 750)')
+            .attr('y', 50)
             .html('contamination')
 
         // Total recovery
-        layer.append('text')
+        const recoveryVolumeLabel = layer.append('g').attr('transform', 'translate(1850, 200)')
+        recoveryVolumeLabel.append('text')
             .attr('id', 'system-recovery-volume')
             .classed('title system-recovery', true)
-            .attr('transform', 'translate(50, 960)')
             .html(`${helpers.numberFormatters.formatComma(totalCollected - landfillVolume)}`)
-        layer.append('text')
+        recoveryVolumeLabel.append('text')
             .classed('sub-title system-recovery', true)
-            .attr('transform', 'translate(50, 1030)')
+            .attr('y', 70)
             .html('tonnes recovered')
+        recoveryVolumeLabel.append('text')
+            .classed('monthly-title system-recovery', true)
+            .attr('y', 120)
+            .html(`an average of <tspan id = "system-recovery-monthly-volume">${helpers.numberFormatters.formatComma((totalCollected - landfillVolume)/ vis.flow.state.noMonths)}</tspan> tonnes`)
+            .style('opacity', vis.flow.state.noMonths === 1 ? 0 : null)
+        recoveryVolumeLabel.append('text')
+            .classed('monthly-title system-recovery', true)
+            .attr('y', 150)
+            .html(`recovered per month`)
+            .style('opacity', vis.flow.state.noMonths === 1 ? 0 : null)
 
     }; // end renderIsometricIllustrations()
-
-    vis.flow.methods.renderCollectionIllustrations = async (layer) => {
-        const binGroup = layer.append('g').classed('bin-illustration-group', true)
-            .attr('transform', `translate(${settings.dims.width/2}, ${settings.dims.height * 0.0025}) scale(${4.5})`)
-        binGroup.append('path').attr('id', 'bin-path-01').attr('d', "M-60.484 55.01V186.25")
-        binGroup.append('path').attr('id', 'bin-path-02').attr('d', "M-77.148 30.013V55.01H79.771V30.013z")
-        binGroup.append('path').attr('id', 'bin-path-03').attr('d', "M-32.3 215.595a15.73 15.73 0 01-15.73 15.73 15.73 15.73 0 01-15.73-15.73 15.73 15.73 0 0115.73-15.73 15.73 15.73 0 0115.73 15.73z")
-        binGroup.append('path').attr('id', 'bin-path-04').attr('d', "M-30.671 241.98h67.393c8.61 0 16.664-3.61 18.053-15.172l9.998-171.696")
-        binGroup.append('path').attr('id', 'bin-path-05').attr('d', "M-16.307 215.595a31.723 31.723 0 01-31.723 31.723 31.723 31.723 0 01-31.722-31.723 31.723 31.723 0 0131.722-31.722 31.723 31.723 0 0131.723 31.722")
-        binGroup.append('path').attr('id', 'bin-path-06').attr('d', "M-77.371 29.659c14.96-9.544 29.538-18.997 47.826-23.12C-1.012.106 34.336-5.49 67.621 9.799l2.11 20.036")
-    }; // end renderCollectionIllustrations()
 
 
     //////////////////////////////////////////////////////////
@@ -1046,15 +1068,19 @@
                 .linkLabel, 
                 .title-label-group.recycling,
                 .illustration-isometric-layer,
-                .illustration-collection-layer, 
                 .node-group.source .node-group,
                 .node-group.target .node-group
             `)
             .style('opacity', 0)
 
         // No pointer events
-       vis.flow.methods.anim.blockEvents(null)
-
+        vis.flow.methods.anim.blockEvents(null)
+        d3.select('.stepper-nav').style('pointer-events', 'none')
+        setTimeout(() => {
+            d3.select('.stepper-nav').style('pointer-events', null)
+                .transition().duration(250)
+                .style('opacity', 1)
+        }, duration * 2);
         // Intro animation settings
         vis.flow.state.step = 'step-1'
         vis.flow.methods.anim.setVerticalNodeAxis(false, duration, true)
@@ -1085,8 +1111,8 @@
                 document.getElementById('toDate').value = document.getElementById('fromDate').value
             }
 
-            const noMonths = fromDateIndex - toDateIndex + 1,
-                monthLabel = `${noMonths} month`
+            vis.flow.state.noMonths= fromDateIndex - toDateIndex + 1,
+                monthLabel = `${vis.flow.state.noMonths} month`
 
             // 3. Update the month counter label
             document.getElementById('monthsLabel').innerHTML = monthLabel
@@ -1392,10 +1418,20 @@
                     d3.select(this).text(`${helpers.numberFormatters.formatComma(i(t))}`)  
                 };
             });
-
+        d3.select('#system-recovery-monthly-volume')
+            .transition().duration(duration)
+            .tween('text', function(d){
+                const currentValue = +this.textContent.replace(/\$|,/g, '')
+                let i = d3.interpolate(currentValue, (totalCollected - landfillVolume)/ vis.flow.state.noMonths);
+                return function(t){  
+                    d3.select(this).text(`${helpers.numberFormatters.formatComma(i(t))}`)  
+                };
+            });
+        d3.selectAll('.system-recovery.monthly-title')
+            .transition().duration(duration)
+            .style('opacity', vis.flow.state.noMonths === 1 ? 0 : null)
 
     }; // end updateVis()
-
 
 
     ///////////////////////////////////////////////
@@ -1404,15 +1440,12 @@
 
     // Block all interaction during intro animation/transition
     vis.flow.methods.anim.blockEvents = function(duration){
-        d3.selectAll(`#${settings.svgID}`).style('pointer-events', 'none') 
+        d3.selectAll(`#${settings.svgID} *` ).style('pointer-events', 'none') 
         if(duration){
             setTimeout(() => { 
-                d3.selectAll(`#${settings.svgID}`).style('pointer-events', null)
-console.log('Unblocked')
+                d3.selectAll(`#${settings.svgID} *`).style('pointer-events', null)
             }, duration)
-console.log('Block for '+duration)
         }
-
     }; // end blockEvents()
 
     vis.flow.methods.anim.animatePath = (pathID, forward = true, duration = settings.animation.updateDuration, delay = 0, ease = d3.easeCubicIn) => {
@@ -1622,11 +1655,9 @@ console.log('Block for '+duration)
                         .linkLabel, 
                         .title-label-group.recycling,
                         .illustration-isometric-layer,
-                        .illustration-collection-layer, 
                         .node-group
                     `)
                     .style('pointer-events', 'none')
-
                 break
 
             case 'step-2': // Vertical node 'default' view for Collection and destination
@@ -1638,16 +1669,13 @@ console.log('Block for '+duration)
                         .style('pointer-events', 'auto')
                         .style('opacity', null)                    
                 }, settings.animation.updateDuration * 2 + 10);
-
                 break
 
             case 'step-3': // Circular flow view
                 vis.flow.methods.anim.blockEvents(settings.animation.updateDuration)         // No events
-
                 d3.selectAll('.link.destination_collection')
                     .style('pointer-events', 'auto')
                     .style('opacity', null)
-
                 break
 
             case 'step-4': // Isometric system view
@@ -1747,9 +1775,9 @@ console.log('Block for '+duration)
         d3.selectAll('.date-selector').on('change', function(){vis.flow.methods.updateVis()})
         document.getElementById('toDate').value =  vis.flow.state.dateRange.to 
         document.getElementById('fromDate').value = vis.flow.state.dateRange.from 
-        d3.select('#monthsLabel').html(`${dateFromIndex - dateToIndex + 1} month`)
+        vis.flow.state.noMonths = dateFromIndex - dateToIndex + 1
+        d3.select('#monthsLabel').html(`${vis.flow.state.noMonths } month`)
     }; // end setInterface()
-
 
     vis.flow.methods.addNav = () => {
         // Setup stepper        
@@ -1886,7 +1914,6 @@ console.log('Block for '+duration)
             }
         };
     }; // end addNav()
-
 
 
     ///////////////////////////
