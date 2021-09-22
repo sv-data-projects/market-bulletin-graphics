@@ -1,7 +1,7 @@
 # MARKET BULLETIN DATA GRAPHICS
 ## TL;DR
 - Go [here](https://sv-data-projects.github.io/market-bulletin-graphics/) to view graphics.
-- Go [here](https://docs.google.com/spreadsheets/d/1rg66KhwEbN_FhpD0hhdd6SMIb9ApKlxh_93N4y9Qx_s/edit#gid=549382680) to edit data.
+- Go [here](https://docs.google.com/spreadsheets/u/1/d/1rg66KhwEbN_FhpD0hhdd6SMIb9ApKlxh_93N4y9Qx_s/) to edit data.
 - Go [here]((#visualisation-options-and-link-generation-guide)) down to custom queries for how to modify graphics with query strings.
 - You are in the right place if you're trying to edit code.
 
