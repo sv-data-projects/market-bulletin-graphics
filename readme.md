@@ -6,9 +6,11 @@
 - You are in the right place if you're trying to edit code.
 
 &nbsp;
-## About the waste annual reports graphics
-This repository contains web-based data visualisations created for use SV in a series of **Annual Waste Reports**. The original development of these graphics took place in 2021 by Brendan of [Little Sketches](http://littlesketch.es/)... so if something code-related breaks contact brendan@littlesketch.es.
+## About the market bulletin data graphics
+This repository contains web-based data visualisations created for use SV in an online version of the **Market Bulletin**. The original development of these graphics took place in 2021 by Brendan of [Little Sketches](http://littlesketch.es/)... so if something code-related breaks contact brendan@littlesketch.es.
 It is hoped that over time however, these graphics can be updated by other contributors via code changes managed in this repo. 
+
+**In May-June 2022, these graphics were adapted for use in a digital market bulletin made from static HTML pages and published through Azure DevOps. That repository is developed as a private repo by SV managed through Azure DevOps**
 
 > **Reminder** 
 >
